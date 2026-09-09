@@ -155,7 +155,7 @@ export const pollStepVideo = createServerFn({ method: "POST" })
     if (job.status === "failed") {
       const message =
         job.error?.code === "moderation_blocked"
-          ? "This step's scene was blocked by the content filter. Try editing the step wording."
+          ? "This step's scene was blocked by the content filter. Tap Try again — the scene will be rewritten in a safer way."
           : (job.error?.message ?? "Video generation failed.");
       await context.supabase
         .from("steps")

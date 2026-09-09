@@ -27,11 +27,12 @@ export const startStepVideo = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input: unknown) => StepId.parse(input))
   .handler(async ({ data, context }): Promise<StepVideoState> => {
-    const { createVideoJob, buildThreeDPrompt, AiGatewayError } = await import("@/lib/ai.server");
+    const { createVideoJob, buildThreeDPrompt, rewriteVisualPromptForSafety, AiGatewayError } =
+      await import("@/lib/ai.server");
 
     const { data: step, error } = await context.supabase
       .from("steps")
-      .select("id, title, body, visual_prompt, video_status, video_path")
+      .select("id, title, body, visual_prompt, video_status, video_path, video_error")
       .eq("id", data.stepId)
       .maybeSingle();
     if (error) throw new Error(error.message);

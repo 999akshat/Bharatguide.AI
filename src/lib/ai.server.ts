@@ -176,15 +176,21 @@ export async function downloadVideo(jobId: string): Promise<ArrayBuffer> {
 }
 
 /** Turns a step's plain visual description into a 3D-animation render brief. */
-export function buildThreeDPrompt(visualPrompt: string, stepTitle: string): string {
+export function buildThreeDPrompt(
+  visualPrompt: string,
+  stepTitle: string,
+  objectOnly = false,
+): string {
   return [
-    "Stylized 3D animated short, Pixar-like character animation, cinematic soft studio lighting,",
-    "smooth subsurface-scattering skin, clean uncluttered environment, shallow depth of field,",
+    "Stylized 3D animated instructional short, cinematic soft studio lighting,",
+    "clean uncluttered environment, shallow depth of field,",
     "in a single continuous shot with gentle camera movement.",
     `Scene: ${visualPrompt || stepTitle}`,
-    "The character clearly performs the action from start to finish so the instruction is easy to follow.",
+    objectOnly
+      ? "Use only inanimate objects and simple animated motion cues. No people, children, human figures, faces, anatomy, or bodily actions."
+      : "An adult cartoon character clearly performs the action from start to finish so the instruction is easy to follow.",
     "No on-screen text, no captions, no watermarks, no logos, no dialogue. Soft ambient background music only.",
-    "Consider micro-detail, facial expression and timing.",
+    "Consider micro-detail and clear timing.",
   ].join(" ");
 }
 
@@ -199,11 +205,10 @@ export async function rewriteVisualPromptForSafety(
   const result = await generateStructured<{ visual_prompt: string }>({
     instructions: [
       "You rewrite short scene descriptions for a family-friendly 3D animation model.",
-      "Keep the same instructional action, but remove anything a safety filter may flag:",
-      "bathrooms, sinks, mouths, spitting, bodily fluids, undressing, faces close to the camera,",
-      "children, medical or intimate detail, brand names and real people.",
-      "Prefer a neutral room, an adult cartoon character shown at a medium distance,",
-      "simple props and clearly stylized animation. One or two sentences, English only.",
+      "Represent the instructional idea using only inanimate tabletop objects, simple motion cues,",
+      "and abstract symbols. Do not include people, children, human figures, faces, anatomy,",
+      "bodily actions, bathrooms, bodily fluids, medical detail, brand names, or real people.",
+      "Keep the result neutral, clearly stylized, and family-friendly. One sentence, English only.",
     ].join(" "),
     input: `Step title: ${stepTitle}\nScene: ${visualPrompt}`,
     schemaName: "safe_visual_prompt",

@@ -64,11 +64,14 @@ export const startStepVideo = createServerFn({ method: "POST" })
     // A previous attempt was blocked by the content filter: soften the scene first,
     // otherwise the identical prompt would be blocked again.
     let visual = step.visual_prompt ?? "";
-    const wasBlocked = (step.video_error ?? "").includes("content filter");
-    if (wasBlocked && visual) {
+    const wasBlocked = /content filter|safety|moderation/i.test(step.video_error ?? "");
+    if (wasBlocked) {
       try {
-        visual = await rewriteVisualPromptForSafety(visual, step.title);
-        await context.supabase.from("steps").update({ visual_prompt: visual }).eq("id", step.id);
+        visual = await rewriteVisualPromptForSafety(visual || step.title, step.title);
+        await context.supabase
+          .from("steps")
+          .update({ visual_prompt: visual, video_error: null })
+          .eq("id", step.id);
       } catch {
         // Fall through with the original scene rather than blocking the retry.
       }
@@ -82,7 +85,9 @@ export const startStepVideo = createServerFn({ method: "POST" })
     } catch (err) {
       const message =
         err instanceof AiGatewayError
-          ? err.status === 402
+          ? err.status === 400 && /content filter|safety|moderation/i.test(err.message)
+            ? "This step's scene was blocked by the content filter. Tap Try again — the scene will be rewritten in a safer way."
+            : err.status === 402
             ? "AI credits are exhausted, so the 3D video could not be started."
             : err.status === 429
               ? "The video service is busy. Please try again in a minute."

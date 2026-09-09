@@ -78,13 +78,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Anuvaad Studio — PDF to regional-language steps" },
+      { title: "BharatGuide-AI — PDF to regional-language steps" },
       {
         name: "description",
         content:
           "Translate any PDF into Hindi, Tamil, Telugu or Bengali steps and generate a 3D animated video for each step.",
       },
-      { property: "og:title", content: "Anuvaad Studio" },
+      { property: "og:title", content: "BharatGuide-AI" },
       {
         property: "og:description",
         content: "PDF to regional-language steps with 3D animated explainer videos.",

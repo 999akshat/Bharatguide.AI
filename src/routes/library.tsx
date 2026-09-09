@@ -13,13 +13,13 @@ import { getLanguage } from "@/lib/languages";
 export const Route = createFileRoute("/library")({
   head: () => ({
     meta: [
-      { title: "Library — Anuvaad Studio" },
+      { title: "Library — BharatGuide-AI" },
       {
         name: "description",
         content:
           "All your translated PDFs, their step lists and generated 3D animated videos in one place.",
       },
-      { property: "og:title", content: "Library — Anuvaad Studio" },
+      { property: "og:title", content: "Library — BharatGuide-AI" },
       {
         property: "og:description",
         content: "Revisit translated documents and the 3D videos generated for each step.",

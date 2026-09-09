@@ -14,13 +14,13 @@ import { getLanguage } from "@/lib/languages";
 export const Route = createFileRoute("/document/$id")({
   head: () => ({
     meta: [
-      { title: "Translated steps — Anuvaad Studio" },
+      { title: "Translated steps — BharatGuide-AI" },
       {
         name: "description",
         content:
           "Your document rewritten as numbered steps in your chosen Indian language, each with a 3D animated video.",
       },
-      { property: "og:title", content: "Translated steps — Anuvaad Studio" },
+      { property: "og:title", content: "Translated steps — BharatGuide-AI" },
       {
         property: "og:description",
         content: "Numbered translated steps with per-step 3D animated explainer videos.",

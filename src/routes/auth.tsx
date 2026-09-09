@@ -14,13 +14,13 @@ import { lovable } from "@/integrations/lovable/index";
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
-      { title: "Sign in — Anuvaad Studio" },
+      { title: "Sign in — BharatGuide-AI" },
       {
         name: "description",
         content:
-          "Sign in to Anuvaad Studio to translate PDFs into Hindi, Tamil, Telugu or Bengali steps.",
+          "Sign in to BharatGuide-AI to translate PDFs into Hindi, Tamil, Telugu or Bengali steps.",
       },
-      { property: "og:title", content: "Sign in — Anuvaad Studio" },
+      { property: "og:title", content: "Sign in — BharatGuide-AI" },
       {
         property: "og:description",
         content: "Access your translated documents and 3D animated step videos.",

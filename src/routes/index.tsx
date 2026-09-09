@@ -14,13 +14,13 @@ import { extractPdfText } from "@/lib/pdf-text";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Anuvaad Studio — PDF to Hindi, Tamil, Telugu & Bengali steps" },
+      { title: "BharatGuide-AI — PDF to Hindi, Tamil, Telugu & Bengali steps" },
       {
         name: "description",
         content:
           "Upload a PDF in any language, get step-by-step instructions in Hindi, Tamil, Telugu or Bengali, and generate a 3D animated video for every step.",
       },
-      { property: "og:title", content: "Anuvaad Studio — PDF to regional-language steps" },
+      { property: "og:title", content: "BharatGuide-AI — PDF to regional-language steps" },
       {
         property: "og:description",
         content:
@@ -109,7 +109,7 @@ function UploadPage() {
           Any PDF, understood in <span className="text-gradient">your language</span>, step by step
         </h1>
         <p className="mx-auto mt-4 max-w-2xl text-base text-muted-foreground">
-          Upload a document in any language. Anuvaad Studio rewrites it as simple numbered steps in
+          Upload a document in any language. BharatGuide-AI rewrites it as simple numbered steps in
           Hindi, Tamil, Telugu or Bengali — and can generate a 3D animated video for each step.
         </p>
       </section>

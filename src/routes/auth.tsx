@@ -47,12 +47,17 @@ function AuthPage() {
     setBusy(true);
     try {
       if (mode === "signup") {
-        const { error } = await supabase.auth.signUp({
+        const { data: signUpData, error } = await supabase.auth.signUp({
           email,
           password,
           options: { emailRedirectTo: window.location.origin },
         });
         if (error) throw error;
+        if (!signUpData.session) {
+          toast.success("Account created. Check your email for the confirmation link.");
+          setBusy(false);
+          return;
+        }
         toast.success("Account created. You can start uploading right away.");
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });

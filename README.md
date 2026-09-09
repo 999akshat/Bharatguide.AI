@@ -1,29 +1,44 @@
-# Polyglot Pages
+@'
+# BharatGuide.AI
 
-build me a full fledged web application where i upload an pdf in any language and it should translate that into regional languages with 4 buttons of regional languages of Hindi Tamil Telugu Bengali 
-also it should translate it but into steps then there should be an button for generating an 3d animated video for each and every translated step
-make it as a professional project 
-use typescript and other languages also use blender if needed for 3d video generation
-let me give you and example for video generation
-if any step says install app from playstore so the video should show a 3d person installing app on his/her phone via playstore
+BharatGuide.AI is a multilingual document assistant that converts PDF content into clear, regional-language instructions and generates short 3D animated videos for individual steps.
 
-This project was built with [Lovable](https://lovable.dev).
+## Features
 
-## Build with Lovable
+- Upload PDF documents
+- Extract and translate document content
+- Convert translated content into actionable steps
+- Support for Hindi, Tamil, Telugu, and Bengali
+- Generate 3D animated videos for individual instructions
+- Google OAuth and email/password authentication
+- Private, user-specific documents and generated content
+- Server-side AI processing
 
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/7b64e905-a837-4acf-96f6-a1cf96f1371f).
+## Tech Stack
 
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
+- React + TypeScript
+- TanStack Start
+- Vite
+- Tailwind CSS
+- Supabase
+- OpenAI API
+- Google GenAI API
+- Zod
+- Drizzle
 
-## Development
+## Getting Started
 
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
+### Requirements
+
+- Node.js
+- npm
+- A Supabase project
+- An OpenAI API key
+- A Google Gemini API key
+
+### Installation
 
 ```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
-npm run dev
-```
+git clone https://github.com/999akshat/Bharatguide.AI.git
+cd Bharatguide.AI
+npm install

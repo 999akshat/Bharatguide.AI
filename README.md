@@ -1,4 +1,4 @@
-@'
+
 # BharatGuide.AI
 
 BharatGuide.AI is a multilingual document assistant that converts PDF content into clear, regional-language instructions and generates short 3D animated videos for individual steps.

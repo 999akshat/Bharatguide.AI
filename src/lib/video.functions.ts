@@ -74,7 +74,7 @@ export const startStepVideo = createServerFn({ method: "POST" })
       }
     }
 
-    const prompt = buildThreeDPrompt(visual, step.title);
+    const prompt = buildThreeDPrompt(visual, step.title, wasBlocked);
 
     let jobId: string;
     try {

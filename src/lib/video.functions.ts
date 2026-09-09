@@ -27,11 +27,12 @@ export const startStepVideo = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input: unknown) => StepId.parse(input))
   .handler(async ({ data, context }): Promise<StepVideoState> => {
-    const { createVideoJob, buildThreeDPrompt, AiGatewayError } = await import("@/lib/ai.server");
+    const { createVideoJob, buildThreeDPrompt, rewriteVisualPromptForSafety, AiGatewayError } =
+      await import("@/lib/ai.server");
 
     const { data: step, error } = await context.supabase
       .from("steps")
-      .select("id, title, body, visual_prompt, video_status, video_path")
+      .select("id, title, body, visual_prompt, video_status, video_path, video_error")
       .eq("id", data.stepId)
       .maybeSingle();
     if (error) throw new Error(error.message);
@@ -60,7 +61,20 @@ export const startStepVideo = createServerFn({ method: "POST" })
       throw new Error("Another 3D video is still rendering. Please wait for it to finish.");
     }
 
-    const prompt = buildThreeDPrompt(step.visual_prompt ?? "", step.title);
+    // A previous attempt was blocked by the content filter: soften the scene first,
+    // otherwise the identical prompt would be blocked again.
+    let visual = step.visual_prompt ?? "";
+    const wasBlocked = (step.video_error ?? "").includes("content filter");
+    if (wasBlocked && visual) {
+      try {
+        visual = await rewriteVisualPromptForSafety(visual, step.title);
+        await context.supabase.from("steps").update({ visual_prompt: visual }).eq("id", step.id);
+      } catch {
+        // Fall through with the original scene rather than blocking the retry.
+      }
+    }
+
+    const prompt = buildThreeDPrompt(visual, step.title);
 
     let jobId: string;
     try {
@@ -141,7 +155,7 @@ export const pollStepVideo = createServerFn({ method: "POST" })
     if (job.status === "failed") {
       const message =
         job.error?.code === "moderation_blocked"
-          ? "This step's scene was blocked by the content filter. Try editing the step wording."
+          ? "This step's scene was blocked by the content filter. Tap Try again — the scene will be rewritten in a safer way."
           : (job.error?.message ?? "Video generation failed.");
       await context.supabase
         .from("steps")

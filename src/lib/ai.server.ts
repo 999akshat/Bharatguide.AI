@@ -187,3 +187,32 @@ export function buildThreeDPrompt(visualPrompt: string, stepTitle: string): stri
     "Consider micro-detail, facial expression and timing.",
   ].join(" ");
 }
+
+/**
+ * Rewrites a scene description that the video model's safety filter rejected
+ * into a neutral, clearly-animated version, keeping the same action.
+ */
+export async function rewriteVisualPromptForSafety(
+  visualPrompt: string,
+  stepTitle: string,
+): Promise<string> {
+  const result = await generateStructured<{ visual_prompt: string }>({
+    instructions: [
+      "You rewrite short scene descriptions for a family-friendly 3D animation model.",
+      "Keep the same instructional action, but remove anything a safety filter may flag:",
+      "bathrooms, sinks, mouths, spitting, bodily fluids, undressing, faces close to the camera,",
+      "children, medical or intimate detail, brand names and real people.",
+      "Prefer a neutral room, an adult cartoon character shown at a medium distance,",
+      "simple props and clearly stylized animation. One or two sentences, English only.",
+    ].join(" "),
+    input: `Step title: ${stepTitle}\nScene: ${visualPrompt}`,
+    schemaName: "safe_visual_prompt",
+    schema: {
+      type: "object",
+      additionalProperties: false,
+      required: ["visual_prompt"],
+      properties: { visual_prompt: { type: "string" } },
+    },
+  });
+  return result.visual_prompt?.trim() || visualPrompt;
+}

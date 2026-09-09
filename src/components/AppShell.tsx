@@ -18,7 +18,7 @@ export function AppShell({ children }: { children: ReactNode }) {
               <Languages className="size-5" />
             </span>
             <span className="flex flex-col leading-none">
-              <span className="font-display text-base font-semibold">Anuvaad Studio</span>
+              <span className="font-display text-base font-semibold">BharatGuide-AI</span>
               <span className="text-[11px] text-muted-foreground">
                 PDF → regional steps → 3D video
               </span>
@@ -62,7 +62,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       <main className="mx-auto w-full max-w-6xl px-4 py-10">{children}</main>
 
       <footer className="border-t border-border/60 py-6 text-center text-xs text-muted-foreground">
-        Anuvaad Studio · translation and 3D scene generation powered by Lovable AI
+        BharatGuide-AI · translation and 3D scene generation powered by Lovable AI
       </footer>
     </div>
   );

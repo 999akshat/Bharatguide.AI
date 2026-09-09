@@ -61,7 +61,20 @@ export const startStepVideo = createServerFn({ method: "POST" })
       throw new Error("Another 3D video is still rendering. Please wait for it to finish.");
     }
 
-    const prompt = buildThreeDPrompt(step.visual_prompt ?? "", step.title);
+    // A previous attempt was blocked by the content filter: soften the scene first,
+    // otherwise the identical prompt would be blocked again.
+    let visual = step.visual_prompt ?? "";
+    const wasBlocked = (step.video_error ?? "").includes("content filter");
+    if (wasBlocked && visual) {
+      try {
+        visual = await rewriteVisualPromptForSafety(visual, step.title);
+        await context.supabase.from("steps").update({ visual_prompt: visual }).eq("id", step.id);
+      } catch {
+        // Fall through with the original scene rather than blocking the retry.
+      }
+    }
+
+    const prompt = buildThreeDPrompt(visual, step.title);
 
     let jobId: string;
     try {
